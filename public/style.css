@@ -2,20 +2,25 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 20px;
+    background: #121212;
+    color: #fff;
 }
 
-form {
-    margin-bottom: 20px;
+h1, h2 {
+    color: #ffcc00;
 }
 
-input {
+input, button {
     margin: 5px;
-    padding: 8px;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 button {
-    padding: 8px;
+    background: #ff5700;
+    color: white;
     cursor: pointer;
+    border: none;
 }
 
 ul {
@@ -24,7 +29,8 @@ ul {
 }
 
 li {
-    margin: 5px;
-    padding: 10px;
-    background: #f4f4f4;
+    margin: 10px;
+    padding: 15px;
+    background: #333;
+    border-radius: 5px;
 }

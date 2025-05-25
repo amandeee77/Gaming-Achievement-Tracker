@@ -5,6 +5,11 @@ document.getElementById("achievementForm").addEventListener("submit", async func
     const achievement = document.getElementById("achievement").value;
     const progress = document.getElementById("progress").value;
 
+    if (!game || !achievement || progress === "") {
+        alert("All fields must be filled!");
+        return;
+    }
+
     const response = await fetch("http://localhost:3000/api/achievements", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -12,7 +17,7 @@ document.getElementById("achievementForm").addEventListener("submit", async func
     });
 
     const data = await response.json();
-    displayAchievement(data);
+    displayAchievement(data); // Ensure new achievement is displayed in the list
 });
 
 async function fetchAchievements() {
@@ -24,11 +29,29 @@ async function fetchAchievements() {
 
 function displayAchievement(achievement) {
     const li = document.createElement("li");
-    li.textContent = `${achievement.game} - ${achievement.achievement} (${achievement.progress}%)`;
+    li.innerHTML = `<strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>`;
     document.getElementById("achievementList").appendChild(li);
 }
 
 fetchAchievements();
 
-const cors = require("cors");
-app.use(cors());
+const gameImages = {
+    "Dreamlight Valley": "dreamlight_valley.jpg",
+    "Minecraft": "minecraft.jpg",
+    "Overwatch": "overwatch.jpg",
+    "The Sims 4": "sims.jpg"
+};
+
+function displayAchievement(achievement) {
+    const li = document.createElement("li");
+    
+    // Use game image if available, otherwise default
+    const gameImage = gameImages[achievement.game] || "default.jpg";
+
+    li.innerHTML = `
+        <img src="images/${gameImage}" alt="${achievement.game}" width="100">
+        <strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>
+    `;
+    
+    document.getElementById("achievementList").appendChild(li);
+}
