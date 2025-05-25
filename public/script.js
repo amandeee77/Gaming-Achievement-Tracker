@@ -1,12 +1,12 @@
 document.getElementById("achievementForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    const game = document.getElementById("game").value;
-    const achievement = document.getElementById("achievement").value;
-    const progress = document.getElementById("progress").value;
+    const game = document.getElementById("game").value.trim();
+    const achievement = document.getElementById("achievement").value.trim();
+    const progress = parseInt(document.getElementById("progress").value, 10);
 
-    if (!game || !achievement || progress === "") {
-        alert("All fields must be filled!");
+    if (!game || !achievement || isNaN(progress) || progress < 0 || progress > 100) {
+        alert("Please enter valid game details and progress (0-100%).");
         return;
     }
 
@@ -16,8 +16,11 @@ document.getElementById("achievementForm").addEventListener("submit", async func
         body: JSON.stringify({ game, achievement, progress })
     });
 
-    const data = await response.json();
-    displayAchievement(data); // Ensure new achievement is displayed in the list
+    if (response.ok) {
+        fetchAchievements(); // Refresh achievements after adding
+    } else {
+        alert("Error adding achievement. Please try again.");
+    }
 });
 
 async function fetchAchievements() {
@@ -27,14 +30,7 @@ async function fetchAchievements() {
     data.forEach(displayAchievement);
 }
 
-function displayAchievement(achievement) {
-    const li = document.createElement("li");
-    li.innerHTML = `<strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>`;
-    document.getElementById("achievementList").appendChild(li);
-}
-
-fetchAchievements();
-
+// Game images mapped to file paths
 const gameImages = {
     "Dreamlight Valley": "dreamlight_valley.jpg",
     "Minecraft": "minecraft.jpg",
@@ -44,14 +40,14 @@ const gameImages = {
 
 function displayAchievement(achievement) {
     const li = document.createElement("li");
-    
-    // Use game image if available, otherwise default
     const gameImage = gameImages[achievement.game] || "default.jpg";
 
     li.innerHTML = `
         <img src="images/${gameImage}" alt="${achievement.game}" width="100">
         <strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>
     `;
-    
+
     document.getElementById("achievementList").appendChild(li);
 }
+
+fetchAchievements();
