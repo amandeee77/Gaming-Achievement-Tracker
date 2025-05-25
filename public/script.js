@@ -10,44 +10,69 @@ document.getElementById("achievementForm").addEventListener("submit", async func
         return;
     }
 
-    const response = await fetch("http://localhost:3000/api/achievements", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ game, achievement, progress })
-    });
+    try {
+        const response = await fetch("http://localhost:3000/api/achievements", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ game, achievement, progress })
+        });
 
-    if (response.ok) {
-        fetchAchievements(); // Refresh achievements after adding
-    } else {
-        alert("Error adding achievement. Please try again.");
+        if (!response.ok) {
+            throw new Error("Failed to add achievement.");
+        }
+
+        const newAchievement = await response.json();  
+        displayAchievement(newAchievement); // Show new achievement immediately
+        fetchAchievements(); // Ensure the full list refreshes
+        
+        // Clear form fields for fresh input
+        document.getElementById("achievementForm").reset();
+
+    } catch (error) {
+        console.error("Error adding achievement:", error);
+        alert(error.message);
     }
 });
 
 async function fetchAchievements() {
-    const response = await fetch("http://localhost:3000/api/achievements");
-    const data = await response.json();
-    document.getElementById("achievementList").innerHTML = "";
-    data.forEach(displayAchievement);
+    try {
+        const response = await fetch("http://localhost:3000/api/achievements");
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch achievements.");
+        }
+
+        const data = await response.json();
+        document.getElementById("achievementList").innerHTML = ""; // Clear before updating
+        data.forEach(displayAchievement);
+
+    } catch (error) {
+        console.error("Error fetching achievements:", error);
+    }
 }
 
-// Game images mapped to file paths
+// 🎮 Game images mapped to file paths
 const gameImages = {
-    "Dreamlight Valley": "dreamlight_valley.jpg",
-    "Minecraft": "minecraft.jpg",
-    "Overwatch": "overwatch.jpg",
-    "The Sims 4": "sims.jpg"
+    "Dreamlight Valley": "images/dreamlight_valley.jpg",
+    "Minecraft": "images/minecraft.jpg",
+    "Overwatch": "images/overwatch.jpg",
+    "The Sims 4": "images/sims.jpg"
 };
 
 function displayAchievement(achievement) {
+    if (!achievement || !achievement.game || !achievement.achievement) return;
+
     const li = document.createElement("li");
-    const gameImage = gameImages[achievement.game] || "default.jpg";
+    const gameImage = gameImages[achievement.game] || "images/gaming.jpg"; 
 
     li.innerHTML = `
-        <img src="images/${gameImage}" alt="${achievement.game}" width="100">
+        <img src="${gameImage}" alt="${achievement.game}" width="100">
         <strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>
     `;
 
     document.getElementById("achievementList").appendChild(li);
 }
 
+// Load achievements on page load
 fetchAchievements();
+feather.replace(); // Activates all Feather Icons
