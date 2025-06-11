@@ -75,4 +75,3 @@ function displayAchievement(achievement) {
 
 // Load achievements on page load
 fetchAchievements();
-feather.replace(); // Activates all Feather Icons
