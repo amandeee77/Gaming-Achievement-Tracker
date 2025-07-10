@@ -1,50 +1,31 @@
 require("dotenv").config();
-console.log("Mongo URI:", process.env.MONGO_URI);
-
-
-
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
-const fs = require("fs");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB Atlas
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log("✅ Connected to MongoDB Atlas"))
-.catch(err => console.error("MongoDB connection error:", err));
+  .then(() => console.log("✅ Connected to MongoDB Atlas"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
-app.use(session({
-  secret: "yourSecretKey",
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  cookie: { maxAge: 3600000 }
-}));
-
-// User Schema for authentication
+// 🧠 Authentication Schema
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }
 });
 const User = mongoose.model("User", userSchema);
 
-// In-memory achievement array
-let achievements = [];
-if (fs.existsSync("achievements.json")) {
-  achievements = JSON.parse(fs.readFileSync("achievements.json", "utf8"));
-}
-
-// Middleware
+// 🛠 Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,7 +38,7 @@ app.use(session({
   cookie: { maxAge: 3600000 }
 }));
 
-// Routes
+// 🧾 Authentication Routes
 app.get("/signup", (req, res) => {
   res.sendFile(path.join(__dirname, "views/signup.html"));
 });
@@ -100,30 +81,11 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// Achievements API
-app.get("/api/achievements", (req, res) => {
-  res.json(achievements);
-});
+// 🎮 Achievements API (MongoDB + Steam enrichment)
+const achievementRoutes = require("./routes/achievements");
+app.use("/api/achievements", achievementRoutes);
 
-app.post("/api/achievements", (req, res) => {
-  const { game, achievement, progress } = req.body;
-  if (!game || !achievement || progress === undefined) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
-
-  const newAchievement = {
-    id: achievements.length + 1,
-    game,
-    achievement,
-    progress
-  };
-
-  achievements.push(newAchievement);
-  fs.writeFileSync("achievements.json", JSON.stringify(achievements, null, 2));
-  res.json(newAchievement);
-});
-
-// Optional: Steam integration
+// 🔍 Optional: Steam API test route
 app.get("/api/steam", async (req, res) => {
   const { steamID, appID } = req.query;
   const controller = new AbortController();
@@ -143,12 +105,14 @@ app.get("/api/steam", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch Steam achievements." });
   }
 });
+
+// 🧯 Error handler
 app.use((err, req, res, next) => {
   console.error("Unexpected server error:", err);
   res.status(500).send("Something broke!");
 });
 
-// Launch the server
+// 🚀 Start server
 app.listen(PORT, () => {
   console.log(`🌐 Server running at http://localhost:${PORT}`);
 });

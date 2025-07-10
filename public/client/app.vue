@@ -5,10 +5,13 @@
     <!-- Form to add new achievement -->
     <form @submit.prevent="addAchievement">
       <div class="form-group">
+        <input v-model="appid" type="number" placeholder="Steam App ID (optional)" />
+      </div>
+      <div class="form-group">
         <input v-model="game" type="text" placeholder="Game Name" required />
       </div>
       <div class="form-group">
-        <input v-model="achievement" type="text" placeholder="Achievement" required />
+        <input v-model="achievement" type="text" placeholder="Achievement Name" required />
       </div>
       <div class="form-group">
         <input v-model.number="progress" type="number" placeholder="Progress %" required />
@@ -52,6 +55,7 @@ export default {
   data() {
     return {
       achievements: [],
+      appid: null,
       game: "",
       achievement: "",
       progress: null,
@@ -80,7 +84,7 @@ export default {
         this.progress < 0 ||
         this.progress > 100
       ) {
-        alert("Please enter valid game details and progress (0-100%).");
+        alert("Please enter valid game details and progress (0–100%).");
         return;
       }
 
@@ -89,10 +93,10 @@ export default {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            appid: this.appid,
             game: this.game,
             achievement: this.achievement,
             progress: this.progress
-            // Optionally include appid and achievement details here
           })
         });
 
@@ -106,6 +110,7 @@ export default {
       }
     },
     resetForm() {
+      this.appid = null;
       this.game = "";
       this.achievement = "";
       this.progress = null;
