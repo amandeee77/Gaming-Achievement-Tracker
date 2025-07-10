@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Achievement = require("../models/achievement");
+const Achievement = require("../models/Achievement"); // ⬅ Capitalize for convention
 const fetchSteamAchievementDetails = require("../utils/fetchSteamAchievementDetails");
 
+// POST: Add new achievement with optional Steam enrichment
 router.post("/", async (req, res) => {
   const { game, achievement, progress, appid } = req.body;
 
@@ -21,6 +22,7 @@ router.post("/", async (req, res) => {
     });
 
     const saved = await newAchievement.save();
+    console.log("Saved new achievement:", saved); // 🪵 Log new entry
     res.status(201).json(saved);
   } catch (err) {
     console.error("Error saving achievement:", err);
@@ -28,16 +30,16 @@ router.post("/", async (req, res) => {
   }
 });
 
+// GET: Retrieve all achievements
 router.get("/", async (req, res) => {
   try {
     const achievements = await Achievement.find();
-
-    // 🪵 Add this:
-    console.log("Achievements sent to frontend:", achievements);
-
+    console.log("Achievements sent to frontend:", achievements); // 🪵 Log results
     res.json(achievements);
   } catch (err) {
+    console.error("Error fetching achievements:", err);
     res.status(500).json({ error: "Failed to fetch achievements." });
   }
 });
+
 module.exports = router;
