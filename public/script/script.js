@@ -50,27 +50,26 @@ async function fetchAchievements() {
         console.error("Error fetching achievements:", error);
     }
 }
-
-// 🎮 Game images mapped to file paths
-const gameImages = {
-    "Dreamlight Valley": "images/dreamlight_valley.jpg",
-    "Minecraft": "images/minecraft.jpg",
-    "Overwatch": "images/overwatch.jpg",
-    "The Sims 4": "images/sims.jpg"
-};
+// Game images mapping
 
 function displayAchievement(achievement) {
-    if (!achievement || !achievement.game || !achievement.achievement) return;
+  if (!achievement || !achievement.game || !achievement.achievement) return;
 
-    const li = document.createElement("li");
-    const gameImage = gameImages[achievement.game] || "images/gaming.jpg"; 
+  const li = document.createElement("li");
+  const gameImage = gameImages[achievement.game] || "images/gaming.jpg";
 
-    li.innerHTML = `
-        <img src="${gameImage}" alt="${achievement.game}" width="100">
-        <strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>
-    `;
+  li.innerHTML = `
+    <img src="${gameImage}" alt="${achievement.game}" width="100">
+    <strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>
 
-    document.getElementById("achievementList").appendChild(li);
+    <div class="progress-container">
+      <div class="progress-bar" style="width: ${achievement.progress}%;">
+        ${achievement.progress}%
+      </div>
+    </div>
+  `;
+
+  document.getElementById("achievementList").appendChild(li);
 }
 
 // Load achievements on page load
