@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Achievement = require("../models/Achievement"); // ⬅ Capitalize for convention
+const Achievement = require("../models/achievement");
 const fetchSteamAchievementDetails = require("../utils/fetchSteamAchievementDetails");
 
 // POST: Add new achievement with optional Steam enrichment
