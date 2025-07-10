@@ -31,10 +31,13 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const achievements = await Achievement.find();
+
+    // 🪵 Add this:
+    console.log("Achievements sent to frontend:", achievements);
+
     res.json(achievements);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch achievements." });
   }
 });
-
 module.exports = router;

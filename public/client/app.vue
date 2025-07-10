@@ -69,6 +69,7 @@ export default {
         const response = await fetch("/api/achievements");
         if (!response.ok) throw new Error("Failed to fetch achievements.");
         this.achievements = await response.json();
+        console.log("Achievements loaded:", this.achievements);
       } catch (err) {
         this.error = err.message;
         console.error("Error fetching achievements:", err);
@@ -76,6 +77,78 @@ export default {
         this.loading = false;
       }
     },
+    async addAchievement() {
+      if (
+        !this.game ||
+        !this.achievement ||
+        isNaN(this.progress) ||
+        this.progress < 0 ||
+        this.progress > 100
+      ) {
+        alert("Please enter valid game details and progress (0–100%).");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/achievements", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            appid: this.appid,
+            game: this.game,
+            achievement: this.achievement,
+            progress: this.progress
+          })
+        });
+
+        if (!response.ok) throw new Error("Failed to add achievement.");
+        const newAchievement = await response.json();
+        this.achievements.push(newAchievement);
+        this.resetForm();
+      } catch (err) {
+        console.error("Error adding achievement:", err);
+        alert(err.message);
+      }
+    },
+    resetForm() {
+      this.appid = null;
+      this.game = "";
+      this.achievement = "";
+      this.progress = null;
+    }
+  },
+  mounted() {
+    this.fetchAchievements();
+  }
+};
+</script>
+
+<style scoped>
+form {
+  margin-bottom: 1rem;
+}
+.form-group {
+  margin-bottom: 0.5rem;
+}
+input {
+  padding: 0.5rem;
+  width: 100%;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  margin-bottom: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+img {
+  display: block;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+}
+</style>
+
     async addAchievement() {
       if (
         !this.game ||
