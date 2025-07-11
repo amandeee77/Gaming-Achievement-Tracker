@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
   .catch(err => console.error("MongoDB connection error:", err));
 
-// 🧠 Authentication Schema
+// 🧠 User Schema
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }
@@ -30,6 +30,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use(session({
   secret: "yourSecretKey",
   resave: false,
@@ -67,11 +68,11 @@ app.post("/login", async (req, res) => {
   if (!valid) return res.status(401).json({ error: "Invalid password." });
 
   req.session.userId = user._id;
+  req.session.userName = user.email;
   res.status(200).json({ success: true });
 });
 
-app.get("/", async (req, res) => {
-  if (!req.session.userId) return res.redirect("/login");
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
@@ -81,30 +82,18 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// 🎮 Achievements API (MongoDB + Steam enrichment)
-const achievementRoutes = require("./routes/achievements");
-app.use("/api/achievements", achievementRoutes);
-
-// 🔍 Optional: Steam API test route
-app.get("/api/steam", async (req, res) => {
-  const { steamID, appID } = req.query;
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
-
-  try {
-    const fetch = (await import("node-fetch")).default;
-    const url = `https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=${appID}&key=${process.env.STEAM_API_KEY}&steamid=${steamID}`;
-    const response = await fetch(url, { signal: controller.signal });
-
-    clearTimeout(timeout);
-    if (!response.ok) throw new Error(`Steam API error: ${response.status}`);
-    const data = await response.json();
-    res.json(data.playerstats);
-  } catch (error) {
-    console.error("Steam API error:", error);
-    res.status(500).json({ error: "Failed to fetch Steam achievements." });
+// 👤 Provide session-based user info
+app.get("/api/user", (req, res) => {
+  if (req.session.userId) {
+    res.json({ name: req.session.userName });
+  } else {
+    res.json({ name: null });
   }
 });
+
+// 🎮 Achievements API (RAWG-enriched backend)
+const achievementRoutes = require("./routes/achievements");
+app.use("/api/achievements", achievementRoutes);
 
 // 🧯 Error handler
 app.use((err, req, res, next) => {

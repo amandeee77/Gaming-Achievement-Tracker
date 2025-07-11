@@ -5,9 +5,7 @@ const achievementSchema = new mongoose.Schema({
   achievement: String,
   progress: Number,
   image: String,     // ← RAWG game image
-  genre: String,     // ← Optional: add flair
-  userId: String     // ← Optional: if using authentication
+  genre: String,    // ← RAWG game genre
 });
 
 module.exports = mongoose.model("Achievement", achievementSchema);
-

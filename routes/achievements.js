@@ -1,31 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const Achievement = require("../models/achievement");
-const fetchSteamAchievementDetails = require("../utils/fetchSteamAchievementDetails");
 
-// POST: Add new achievement with optional Steam enrichment
+// POST: Add new achievement with RAWG enrichment from frontend
 router.post("/", async (req, res) => {
-  const { game, achievement, progress, appid } = req.body;
+  const { game, achievement, progress, image, genre } = req.body;
 
   try {
-    let details = null;
-    if (appid) {
-      details = await fetchSteamAchievementDetails(appid, achievement);
-    }
-
     const newAchievement = new Achievement({
       game,
       achievement,
       progress,
-      appid,
-      details
+      image,
+      genre
     });
 
     const saved = await newAchievement.save();
-    console.log("Saved new achievement:", saved); // 🪵 Log new entry
+    console.log("✅ Saved new achievement:", saved);
     res.status(201).json(saved);
   } catch (err) {
-    console.error("Error saving achievement:", err);
+    console.error("❌ Error saving achievement:", err);
     res.status(500).json({ error: "Failed to save achievement." });
   }
 });
@@ -33,11 +27,11 @@ router.post("/", async (req, res) => {
 // GET: Retrieve all achievements
 router.get("/", async (req, res) => {
   try {
-    const achievements = await Achievement.find();
-    console.log("Achievements sent to frontend:", achievements); // 🪵 Log results
+    const achievements = await Achievement.find().sort({ _id: -1 });
+    console.log("📦 Sent achievements to frontend:", achievements);
     res.json(achievements);
   } catch (err) {
-    console.error("Error fetching achievements:", err);
+    console.error("❌ Error fetching achievements:", err);
     res.status(500).json({ error: "Failed to fetch achievements." });
   }
 });

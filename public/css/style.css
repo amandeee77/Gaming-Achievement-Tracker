@@ -1,83 +1,83 @@
-/* 🌌 Full-Page Background */
+/* 🌌 Background Styling */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
-  background: url("/images/gaming.jpg") no-repeat center center fixed;
+  background: url("/Gaming-Achievement-Tracker/public/images/gaming.jpg") no-repeat center center fixed;
   background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  color: #ffffff;
+  overflow-y: auto;
 }
 
-/* 🧱 Main Container */
+/* 📦 Container */
 .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  text-emphasis-color: #ffcc00; /* Gold accent */
-  color: #ffffff;
-  width: 80%;
-  max-width: 900px;
-  background: rgba(0, 0, 0, 0.8); /* Dark overlay */
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 /* 🏷️ Header */
 header {
-  width: 100%;
   text-align: center;
-  padding: 20px;
-  color: #ffcc00;
-  font-size: 24px;
+  margin-bottom: 1rem;
 }
 
-/* 📦 Main Content */
-.content {
+header h1 {
+  font-size: 2.5rem;
+  color: #ffcc00;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+/* 📝 Form */
+form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-/* 🧭 Footer */
-footer {
+.form-group input {
   width: 100%;
-  text-align: center;
-  padding: 10px;
-  color: #ffffff;
-  font-size: 14px;
-}
-
-/* 🟢 Achievement Progress Bar */
-.progress-container {
-  background-color: rgba(255, 255, 255, 0.2); /* subtle contrast */
+  padding: 0.75rem;
   border-radius: 6px;
-  overflow: hidden;
-  height: 1rem;
-  margin-top: 0.5rem;
-  width: 100%;
+  border: none;
+  font-size: 1rem;
+  background: #222;
+  color: #fff;
 }
 
-.progress-bar {
-  background-color: #ffcc00; /* gold accent */
-  height: 100%;
-  color: #000000;
-  text-align: center;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  transition: width 0.4s ease-in-out;
-  white-space: nowrap;
+.form-group input::placeholder {
+  color: #aaa;
 }
 
-/* 🎮 Guest Access Link */
+button[type="submit"] {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #ffd633;
+}
+
+/* 🎮 Guest Link */
 .guest-link {
-  margin-top: 1rem;
   text-align: center;
+  margin-bottom: 2rem;
 }
 
 .guest-link a {
@@ -90,3 +90,59 @@ footer {
 .guest-link a:hover {
   text-decoration: underline;
 }
+
+/* 🏆 Achievement List */
+#achievementList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.achievement-entry {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
+
+.achievement-entry img.game-cover {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-entry h3 {
+  color: #ffcc00;
+  margin-bottom: 0.25rem;
+}
+
+.achievement-entry p {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 📊 Progress Bar */
+.progress-container {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  height: 1rem;
+}
+
+.progress-bar {
+  background-color: #ffcc00;
+  height: 100%;
+  color: #000;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  transition: width 0.4s ease-in-out;
+}
+
+/* 
