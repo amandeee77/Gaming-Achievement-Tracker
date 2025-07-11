@@ -5,6 +5,7 @@ const Achievement = require("../models/achievement");
 // POST: Add new achievement with RAWG enrichment from frontend
 router.post("/", async (req, res) => {
   const { game, achievement, progress, image, genre } = req.body;
+  const userId = req.session.userId; // ← from logged-in session
 
   try {
     const newAchievement = new Achievement({
@@ -12,11 +13,11 @@ router.post("/", async (req, res) => {
       achievement,
       progress,
       image,
-      genre
+      genre,
+      userId
     });
 
     const saved = await newAchievement.save();
-    console.log("✅ Saved new achievement:", saved);
     res.status(201).json(saved);
   } catch (err) {
     console.error("❌ Error saving achievement:", err);
