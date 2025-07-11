@@ -1,60 +1,61 @@
-/* Apply a full-page background */
+/* 🌌 Full-Page Background */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: url("public/images/gaming.jpg") no-repeat center center fixed; 
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url("public/images/gaming.jpg") no-repeat center center fixed; 
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-/* Container for page elements */
+/* 🧱 Main Container */
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    text-emphasis-color: #ffcc00; /* Gold color for emphasis */
-    color: #ffffff; /* White text for contrast */
-    width: 80%;
-    max-width: 900px;
-    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-emphasis-color: #ffcc00; /* Gold accent */
+  color: #ffffff;
+  width: 80%;
+  max-width: 900px;
+  background: rgba(0, 0, 0, 0.8); /* Dark overlay */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
 }
 
-/* Header */
+/* 🏷️ Header */
 header {
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-    color: #ffcc00;
-    font-size: 24px;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  color: #ffcc00;
+  font-size: 24px;
 }
 
-/* Main Content */
+/* 📦 Main Content */
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-/* Footer */
+/* 🧭 Footer */
 footer {
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    color: #ffffff;
-    font-size: 14px;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  color: #ffffff;
+  font-size: 14px;
 }
+
 /* 🟢 Achievement Progress Bar */
 .progress-container {
-  background-color: rgba(255, 255, 255, 0.2); /* subtle contrast for dark mode */
+  background-color: rgba(255, 255, 255, 0.2); /* subtle contrast */
   border-radius: 6px;
   overflow: hidden;
   height: 1rem;
@@ -63,12 +64,29 @@ footer {
 }
 
 .progress-bar {
-  background-color: #ffcc00; /* gold to match header accent */
+  background-color: #ffcc00; /* gold accent */
   height: 100%;
-  color: #000000; /* black text for contrast */
+  color: #000000;
   text-align: center;
   font-size: 0.75rem;
   line-height: 1rem;
   transition: width 0.4s ease-in-out;
   white-space: nowrap;
+}
+
+/* 🎮 Guest Access Link */
+.guest-link {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.guest-link a {
+  color: #ffcc00;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.guest-link a:hover {
+  text-decoration: underline;
 }
