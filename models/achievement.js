@@ -1,17 +1,13 @@
 const mongoose = require("mongoose");
 
-const AchievementSchema = new mongoose.Schema({
+const achievementSchema = new mongoose.Schema({
   game: String,
   achievement: String,
   progress: Number,
-  appid: Number,
-  details: {
-    name: String,
-    displayName: String,
-    description: String,
-    icon: String,
-    icongray: String
-  }
+  image: String,     // ← RAWG game image
+  genre: String,     // ← Optional: add flair
+  userId: String     // ← Optional: if using authentication
 });
 
-module.exports = mongoose.model("achievement", AchievementSchema);
+module.exports = mongoose.model("Achievement", achievementSchema);
+

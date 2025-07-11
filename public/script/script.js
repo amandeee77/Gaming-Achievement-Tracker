@@ -1,76 +1,57 @@
-document.getElementById("achievementForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
+// 🔍 Fetch game info from RAWG.io
+async function searchGame(title) {
+  const apiKey = "YOUR_RAWG_API_KEY"; // Replace with your actual API key
+  const response = await fetch(`https://api.rawg.io/api/games?search=${encodeURIComponent(title)}&key=${apiKey}`);
+  const data = await response.json();
+  return data.results[0]; // Take the first match
+}
 
-    const game = document.getElementById("game").value.trim();
-    const achievement = document.getElementById("achievement").value.trim();
-    const progress = parseInt(document.getElementById("progress").value, 10);
+// 📝 Submit Achievement Entry
+document.getElementById("achievementForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-    if (!game || !achievement || isNaN(progress) || progress < 0 || progress > 100) {
-        alert("Please enter valid game details and progress (0-100%).");
-        return;
-    }
+  const game = document.getElementById("game").value;
+  const achievement = document.getElementById("achievement").value;
+  const progress = parseInt(document.getElementById("progress").value);
 
-    try {
-        const response = await fetch("http://localhost:3000/api/achievements", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ game, achievement, progress })
-        });
+  const gameData = await searchGame(game);
 
-        if (!response.ok) {
-            throw new Error("Failed to add achievement.");
-        }
+  const entry = {
+    game,
+    achievement,
+    progress,
+    image: gameData?.background_image || "", // Safeguard if image missing
+    genre: gameData?.genres?.[0]?.name || "Unknown"
+  };
 
-        const newAchievement = await response.json();  
-        displayAchievement(newAchievement); // Show new achievement immediately
-        fetchAchievements(); // Ensure the full list refreshes
-        
-        // Clear form fields for fresh input
-        document.getElementById("achievementForm").reset();
+  try {
+    await fetch("/api/achievements", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry)
+    });
 
-    } catch (error) {
-        console.error("Error adding achievement:", error);
-        alert(error.message);
-    }
+    renderAchievement(entry); // Update list visually
+  } catch (error) {
+    console.error("Failed to submit achievement:", error);
+  }
 });
 
-async function fetchAchievements() {
-    try {
-        const response = await fetch("http://localhost:3000/api/achievements");
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch achievements.");
-        }
-
-        const data = await response.json();
-        document.getElementById("achievementList").innerHTML = ""; // Clear before updating
-        data.forEach(displayAchievement);
-
-    } catch (error) {
-        console.error("Error fetching achievements:", error);
-    }
-}
-// Game images mapping
-
-function displayAchievement(achievement) {
-  if (!achievement || !achievement.game || !achievement.achievement) return;
-
+// 🎨 Render Achievement with Visual Flair
+function renderAchievement(entry) {
   const li = document.createElement("li");
-  const gameImage = gameImages[achievement.game] || "images/gaming.jpg";
+  li.className = "achievement-entry";
 
   li.innerHTML = `
-    <img src="${gameImage}" alt="${achievement.game}" width="100">
-    <strong>${achievement.game}</strong>: ${achievement.achievement} - <b>${achievement.progress}% Complete</b>
-
+    <img src="${entry.image}" alt="${entry.game}" class="game-cover" />
+    <h3>${entry.game} - ${entry.achievement}</h3>
+    <p>Genre: ${entry.genre}</p>
     <div class="progress-container">
-      <div class="progress-bar" style="width: ${achievement.progress}%;">
-        ${achievement.progress}%
+      <div class="progress-bar" style="width: ${entry.progress}%">
+        ${entry.progress}%
       </div>
     </div>
   `;
 
   document.getElementById("achievementList").appendChild(li);
 }
-
-// Load achievements on page load
-fetchAchievements();
