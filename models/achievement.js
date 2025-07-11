@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 
 const achievementSchema = new mongoose.Schema({
-  game: String,
-  achievement: String,
-  progress: Number,
-  image: String,     // ← RAWG game image
-  genre: String,    // ← RAWG game genre
+  game: { type: String, required: true },
+  achievement: { type: String, required: true },
+  progress: { type: Number, required: true },
+  image: String,
+  genre: String,
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  createdAt: { type: Date, default: Date.now }
 });
+
 
 module.exports = mongoose.model("Achievement", achievementSchema);
