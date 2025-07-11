@@ -27,14 +27,20 @@ router.post("/", async (req, res) => {
 
 // GET: Retrieve all achievements
 router.get("/", async (req, res) => {
+  const userId = req.session.userId;
+
   try {
-    const achievements = await Achievement.find().sort({ _id: -1 });
-    console.log("📦 Sent achievements to frontend:", achievements);
+    const achievements = await Achievement.find({ userId })
+      .sort({ createdAt: -1 })
+      .limit(5);
+
     res.json(achievements);
   } catch (err) {
     console.error("❌ Error fetching achievements:", err);
     res.status(500).json({ error: "Failed to fetch achievements." });
   }
 });
+
+
 
 module.exports = router;
