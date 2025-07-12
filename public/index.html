@@ -1,54 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gaming Achievement Tracker</title>
-  <link rel="stylesheet" href="/Gaming-Achievement-Tracker/public/css/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gaming Achievement Tracker</title>
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-  <div class="container">
+    <div class="container">
 
-    <!-- 🎮 Site Header -->
-    <header>
-      <h1>Gaming Achievement Tracker</h1>
-      <p>Track your gaming goals, display progress, and level up with visuals powered by RAWG</p>
-    </header>
+        <!-- 🎮 Site Header -->
+        <header>
+            <h1>Gaming Achievement Tracker</h1>
+            <p>
+                Track your gaming goals, display progress, and level up with visuals powered by RAWG
+            </p>
+        </header>
 
-    <!-- 📝 Achievement Form -->
-    <main class="content">
-      <form id="achievementForm">
-        <div class="form-group">
-          <input type="text" id="game" placeholder="Game Title (e.g. DayZ)" required />
+        <!-- 👋 Welcome Banner -->
+        <div class="welcome-banner" id="welcomeBanner">
+            <!-- JS will inject greeting here -->
         </div>
-        <div class="form-group">
-          <input type="text" id="achievement" placeholder="Achievement Name (e.g. First Kill)" required />
-        </div>
-        <div class="form-group">
-          <input type="number" id="progress" placeholder="Progress %" min="0" max="100" required />
-        </div>
-        <button type="submit">Add Achievement</button>
-      </form>
 
-      <!-- Guest Access Link -->
-      <div class="guest-link">
-        <p>Or <a href="/">explore achievements as a guest 🎮</a></p>
-      </div>
+        <main class="content">
+            <!-- 📝 Achievement Form -->
+            <form id="achievementForm">
+                <div class="form-group">
+                    <input type="text" id="game" placeholder="Game Title (e.g. DayZ)" required />
+                </div>
+                <div class="form-group">
+                    <input type="text" id="achievement" placeholder="Achievement Name (e.g. First Kill)" required />
+                </div>
+                <div class="form-group">
+                    <input type="number" id="progress" placeholder="Progress %" min="0" max="100" required />
+                </div>
+                <button type="submit">Add Achievement</button>
+            </form>
 
-      <!-- Achievement List -->
-      <section id="achievementDisplay">
-        <h2>Your Achievements</h2>
-        <ul id="achievementList"></ul>
-      </section>
-    </main>
+            <!-- 🎮 Guest Access Portal -->
+            <div class="guest-access">
+                <p>Access your journey as a guest</p>
+                <div class="guest-buttons">
+                    <a href="/login.html" class="guest-btn">Sign In</a>
+                    <a href="/signup.html" class="guest-btn">Create Account</a>
+                </div>
+            </div>
 
-    <!-- Footer -->
-    <footer>
-      <p>© 2025 Gaming Tracker. Built by Amanda.</p>
-    </footer>
+            <!-- 🏆 Achievement List -->
+            <section id="achievementDisplay">
+                <h2>Your Achievements</h2>
+                <ul id="achievementList"></ul>
+            </section>
+        </main>
 
-  </div>
+        <!-- 🧭 Footer -->
+        <footer>
+            <p>© 2025 Gaming Tracker. Built by Amanda.</p>
+        </footer>
 
-  <script src="/Gaming-Achievement-Tracker/public/script/script.js"></script>
+    </div>
+    <script src="/script/script.js"></script>
 </body>
 </html>

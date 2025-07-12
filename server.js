@@ -95,6 +95,28 @@ app.get("/api/user", (req, res) => {
 const achievementRoutes = require("./routes/achievements");
 app.use("/api/achievements", achievementRoutes);
 
+// 🔎 Proxy RAWG API request to avoid CORS
+app.get("/api/rawg-search", async (req, res) => {
+  const title = req.query.title;
+  const apiKey = process.env.RAWG_API_KEY;
+
+  try {
+    const fetch = (await import("node-fetch")).default;
+    const url = `https://api.rawg.io/api/games?search=${encodeURIComponent(title)}&key=${apiKey}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`RAWG API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.json(data.results[0] || {}); // Send first match or empty if no result
+  } catch (err) {
+    console.error("❌ RAWG API fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch game data from RAWG." });
+  }
+});
+
 // 🧯 Error handler
 app.use((err, req, res, next) => {
   console.error("Unexpected server error:", err);
