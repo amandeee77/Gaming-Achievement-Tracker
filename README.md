@@ -1,5 +1,8 @@
 🎮 Gaming Achievement Tracker
+
+
 Overview
+
 The Gaming Achievement Tracker is a responsive full-stack web application that allows users to submit, visualize, and manage progress toward their personal gaming goals. Users can record achievements, fetch game metadata using the RAWG API, and experience a personalized dashboard whether logged in or exploring as a guest.
 Built with Node.js, Express.js, and integrated with MongoDB and the RAWG API, this app showcases full-stack functionality, session-based personalization, and dynamic DOM rendering.
 
