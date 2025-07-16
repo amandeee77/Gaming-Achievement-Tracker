@@ -23,8 +23,12 @@ Built with Node.js, Express.js, and integrated with MongoDB and the RAWG API, th
 
 
 🚀 How to Run the Project Locally
+
+
 ###1. 📦 Install Node.js
 If you haven’t already, download and install Node.js for your system.
+
+
 ###2. 🧱 Clone This Repository
 git clone https://github.com/amandeee77/gaming-achievement-tracker.git
 cd gaming-achievement-tracker
