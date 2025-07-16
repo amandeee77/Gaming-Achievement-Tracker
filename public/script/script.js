@@ -1,4 +1,5 @@
-// 🔍 Fetch game info from RAWG through backend proxy
+// Fetch game info from RAWG through backend proxy
+// This function searches for a game by title and returns its details.
 async function searchGame(title) {
   try {
     const response = await fetch(`/api/rawg-search?title=${encodeURIComponent(title)}`);
@@ -23,7 +24,9 @@ async function searchGame(title) {
   }
 }
 
-// 📝 Submit Achievement Entry
+// Submit Achievement Entry
+// This function handles the form submission for adding a new achievement.
+// It fetches game data from RAWG and sends the achievement to the backend.
 document.getElementById("achievementForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -62,7 +65,9 @@ document.getElementById("achievementForm").addEventListener("submit", async func
   }
 });
 
-// 🎨 Render Achievement with Visual Flair
+// Render Achievement with Visual Flair
+// This function creates a list item for each achievement entry and appends it to the list.
+// It includes the game cover image, achievement name, genre, and progress bar.
 function renderAchievement(entry) {
   const li = document.createElement("li");
   li.className = "achievement-entry";
@@ -81,7 +86,9 @@ function renderAchievement(entry) {
   document.getElementById("achievementList").appendChild(li);
 }
 
-// 🧭 Fetch 5 Recent Achievements on Page Load
+// Fetch 5 Recent Achievements on Page Load
+// This function retrieves the latest achievements from the backend and displays them.
+// It uses the fetch API to get the data and then calls renderAchievement for each entry.
 async function fetchRecentAchievements() {
   try {
     const response = await fetch("/api/achievements");
@@ -97,13 +104,17 @@ async function fetchRecentAchievements() {
   }
 }
 
-// 🔁 Initialize on Page Load
+// Initialize on Page Load
+// This function sets up the welcome message and fetches recent achievements when the page loads.
+// It also logs a message to the console for debugging.
 window.addEventListener("DOMContentLoaded", () => {
   console.log("🎮 Achievement Tracker Loaded");
   fetchRecentAchievements();
 });
 
-// 👤 Fetch user name and greet
+// Fetch user name and greet
+// This function retrieves the current user's name from the backend and displays a welcome message.
+// It updates the banner with a personalized greeting if the user is logged in.
 async function displayWelcomeMessage() {
   try {
     const response = await fetch("/api/user");
@@ -127,7 +138,9 @@ async function displayWelcomeMessage() {
   }
 }
 
-// 🔁 Run this when page loads
+// Run this when page loads
+// This initializes the welcome message and fetches recent achievements.
+// It ensures the user sees their name if logged in, or a generic message if not.
 window.addEventListener("DOMContentLoaded", () => {
   console.log("🎮 Achievement Tracker Loaded");
   displayWelcomeMessage();
