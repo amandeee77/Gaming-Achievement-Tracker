@@ -1,8 +1,12 @@
+// auth.js - Handles user authentication for Gaming Achievement Tracker
+// This script manages user registration and login functionality.
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.querySelector("form[action='/register']");
   const loginForm = document.querySelector("form[action='/login']");
 
-  // 🔐 Sign-Up Flow
+  // Sign-Up Flow
+  // This function handles user registration by sending a POST request to the server.
+  // It checks for existing email and hashes the password before saving the user.
   if (signupForm) {
     signupForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -37,7 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 🔑 Login Flow
+  // Login Flow
+  // This function handles user login by sending a POST request with email and password.
+  // It checks credentials and sets session variables on success.
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();

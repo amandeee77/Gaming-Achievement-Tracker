@@ -3,9 +3,10 @@ const router = express.Router();
 const Achievement = require("../models/achievement");
 
 // POST: Add new achievement with RAWG enrichment from frontend
+// This route allows users to submit a new achievement entry.
 router.post("/", async (req, res) => {
   const { game, achievement, progress, image, genre } = req.body;
-  const userId = req.session.userId; // ← from logged-in session
+  const userId = req.session.userId; 
 
   try {
     const newAchievement = new Achievement({
@@ -26,6 +27,7 @@ router.post("/", async (req, res) => {
 });
 
 // GET: Retrieve all achievements
+// This route fetches the most recent achievements for the logged-in user.
 router.get("/", async (req, res) => {
   const userId = req.session.userId;
 
@@ -42,5 +44,6 @@ router.get("/", async (req, res) => {
 });
 
 
-
+// GET: Retrieve achievements by game
+// This route allows users to filter achievements by a specific game.
 module.exports = router;
