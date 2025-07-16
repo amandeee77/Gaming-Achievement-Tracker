@@ -1,3 +1,5 @@
+// Gaming Achievement Tracker - Model for Achievements
+// This model defines the structure for achievement entries in the MongoDB database.
 const mongoose = require("mongoose");
 
 const achievementSchema = new mongoose.Schema({
