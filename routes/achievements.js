@@ -2,11 +2,33 @@ const express = require("express");
 const router = express.Router();
 const Achievement = require("../models/achievement");
 
-// POST: Add new achievement with RAWG enrichment from frontend
-// This route allows users to submit a new achievement entry.
+// Automatically fetch cover image and genre from RAWG API
+const fetch = require("node-fetch");
+
+
+
+// POST: Add new achievement with RAWG enrichment (server-side)
 router.post("/", async (req, res) => {
-  const { game, achievement, progress, image, genre } = req.body;
-  const userId = req.session.userId; 
+  const { game, achievement, progress } = req.body;
+  const userId = req.session.userId;
+
+  let image = "";
+  let genre = "";
+
+  try {
+    const apiKey = process.env.RAWG_API_KEY;
+    const url = `https://api.rawg.io/api/games?search=${encodeURIComponent(game)}&key=${apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const match = data.results?.[0];
+    if (match) {
+      image = match.background_image || "";
+      genre = match.genres?.[0]?.name || "";
+    }
+  } catch (err) {
+    console.error("❌ RAWG enrichment failed:", err);
+  }
 
   try {
     const newAchievement = new Achievement({
@@ -26,8 +48,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET: Retrieve all achievements
-// This route fetches the most recent achievements for the logged-in user.
+// GET: Retrieve recent achievements for the user
 router.get("/", async (req, res) => {
   const userId = req.session.userId;
 
@@ -43,7 +64,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  const userId = req.session.userId;
+  const achievementId = req.params.id;
 
-// GET: Retrieve achievements by game
-// This route allows users to filter achievements by a specific game.
+  try {
+    const deleted = await Achievement.findOneAndDelete({ _id: achievementId, userId });
+    if (!deleted) return res.status(404).json({ error: "Achievement not found." });
+
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("❌ Error deleting achievement:", err);
+    res.status(500).json({ error: "Failed to delete achievement." });
+  }
+});
+
 module.exports = router;

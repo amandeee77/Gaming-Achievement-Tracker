@@ -1,6 +1,7 @@
 // loads environment variables from .env file
-//import necessary modules
 require("dotenv").config();
+
+//import necessary modules
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -8,9 +9,13 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
+const RAWG_API_KEY = process.env.RAWG_API_KEY;
+
+
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -112,11 +117,9 @@ app.use("/api/achievements", achievementRoutes);
 // This route allows the frontend to search for games using the RAWG API.
 app.get("/api/rawg-search", async (req, res) => {
   const title = req.query.title;
-  const apiKey = process.env.RAWG_API_KEY;
-
   try {
     const fetch = (await import("node-fetch")).default;
-    const url = `https://api.rawg.io/api/games?search=${encodeURIComponent(title)}&key=${apiKey}`;
+    const url = `https://api.rawg.io/api/games?search=${encodeURIComponent(title)}&key=${RAWG_API_KEY}`;
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -124,14 +127,22 @@ app.get("/api/rawg-search", async (req, res) => {
     }
 
     const data = await response.json();
-    res.json(data.results[0] || {}); // Send first match or empty if no result
+    res.json(data.results[0] || {});
   } catch (err) {
     console.error("❌ RAWG API fetch error:", err);
     res.status(500).json({ error: "Failed to fetch game data from RAWG." });
   }
 });
 
+
+
 // Error handler
+// Handle 404 for unknown routes
+app.use((req, res) => {
+  res.status(404).send("🚫 Route not found");
+});
+
+// Global error handler
 // This middleware catches any errors that occur in the app and sends a generic error response.
 app.use((err, req, res, next) => {
   console.error("Unexpected server error:", err);

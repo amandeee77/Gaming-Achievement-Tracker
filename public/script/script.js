@@ -25,8 +25,6 @@ async function searchGame(title) {
 }
 
 // Submit Achievement Entry
-// This function handles the form submission for adding a new achievement.
-// It fetches game data from RAWG and sends the achievement to the backend.
 document.getElementById("achievementForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -58,27 +56,30 @@ document.getElementById("achievementForm").addEventListener("submit", async func
 
     if (!response.ok) throw new Error("Failed to save achievement");
 
-    // Refetch list after submission
-    await fetchRecentAchievements();
+    document.getElementById("achievementForm").reset(); // ✅ Clear form after success
+    await fetchRecentAchievements(); // ✅ Refresh achievements
   } catch (error) {
     console.error("Error submitting achievement:", error);
   }
 });
 
 // Render Achievement with Visual Flair
-// This function creates a list item for each achievement entry and appends it to the list.
-// It includes the game cover image, achievement name, genre, and progress bar.
 function renderAchievement(entry) {
   const li = document.createElement("li");
   li.className = "achievement-entry";
 
   li.innerHTML = `
-    <img src="${entry.image}" alt="${entry.game}" class="game-cover" />
-    <h3>${entry.game} - ${entry.achievement}</h3>
-    <p>Genre: ${entry.genre}</p>
-    <div class="progress-container">
-      <div class="progress-bar" style="width: ${entry.progress}%">
-        ${entry.progress}%
+    <div class="achievement-card">
+      <img src="${entry.image}" alt="${entry.game} cover" class="game-cover" />
+      <div class="achievement-info">
+        <h3>${entry.game} - ${entry.achievement}</h3>
+        <p>Genre: ${entry.genre}</p>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: ${entry.progress}%;">
+            ${entry.progress}%
+          </div>
+        </div>
+        <button class="delete-btn" onclick="deleteAchievement('${entry._id}')">❌ Remove</button>
       </div>
     </div>
   `;
@@ -86,9 +87,19 @@ function renderAchievement(entry) {
   document.getElementById("achievementList").appendChild(li);
 }
 
-// Fetch 5 Recent Achievements on Page Load
-// This function retrieves the latest achievements from the backend and displays them.
-// It uses the fetch API to get the data and then calls renderAchievement for each entry.
+// Delete Achievement Entry
+async function deleteAchievement(id) {
+  try {
+    const response = await fetch(`/api/achievements/${id}`, { method: "DELETE" });
+    if (!response.ok) throw new Error("Delete failed");
+
+    await fetchRecentAchievements(); // Refresh display
+  } catch (error) {
+    console.error("Error deleting achievement:", error);
+  }
+}
+
+// Fetch Recent Achievements
 async function fetchRecentAchievements() {
   try {
     const response = await fetch("/api/achievements");
@@ -104,17 +115,7 @@ async function fetchRecentAchievements() {
   }
 }
 
-// Initialize on Page Load
-// This function sets up the welcome message and fetches recent achievements when the page loads.
-// It also logs a message to the console for debugging.
-window.addEventListener("DOMContentLoaded", () => {
-  console.log("🎮 Achievement Tracker Loaded");
-  fetchRecentAchievements();
-});
-
 // Fetch user name and greet
-// This function retrieves the current user's name from the backend and displays a welcome message.
-// It updates the banner with a personalized greeting if the user is logged in.
 async function displayWelcomeMessage() {
   try {
     const response = await fetch("/api/user");
@@ -122,25 +123,21 @@ async function displayWelcomeMessage() {
 
     const banner = document.getElementById("welcomeBanner");
 
-    if (data.name) {
-      banner.innerHTML = `
+    banner.innerHTML = data.name
+      ? `
         <h2>Welcome back, ${data.name} 🎉</h2>
         <p>Your achievement journey awaits—let’s level up!</p>
-      `;
-    } else {
-      banner.innerHTML = `
+      `
+      : `
         <h2>Welcome, Guest 👋</h2>
         <p>Feel free to explore or <a href="/login">log in</a> to start tracking your progress.</p>
       `;
-    }
   } catch (error) {
     console.error("Error loading welcome message:", error);
   }
 }
 
-// Run this when page loads
-// This initializes the welcome message and fetches recent achievements.
-// It ensures the user sees their name if logged in, or a generic message if not.
+// Initialize on Page Load
 window.addEventListener("DOMContentLoaded", () => {
   console.log("🎮 Achievement Tracker Loaded");
   displayWelcomeMessage();
