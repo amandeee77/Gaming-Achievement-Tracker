@@ -1,5 +1,4 @@
-// Fetch game info from RAWG through backend proxy
-// This function searches for a game by title and returns its details.
+// Fetch game info from RAWG via backend proxy
 async function searchGame(title) {
   try {
     const response = await fetch(`/api/rawg-search?title=${encodeURIComponent(title)}`);
@@ -9,7 +8,7 @@ async function searchGame(title) {
     if (!game || !game.name) {
       console.warn("RAWG returned no match");
       return {
-        background_image: "/images/default.jpg", // fallback image
+        background_image: "/images/default.jpg",
         genres: [{ name: "Unknown" }]
       };
     }
@@ -24,8 +23,8 @@ async function searchGame(title) {
   }
 }
 
-// Submit Achievement Entry
-document.getElementById("achievementForm").addEventListener("submit", async function (e) {
+// Handle Achievement Form Submission
+document.getElementById("achievementForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const game = document.getElementById("game").value.trim();
@@ -43,31 +42,30 @@ document.getElementById("achievementForm").addEventListener("submit", async func
     game,
     achievement,
     progress,
-    image: gameData?.background_image || "/images/default.jpg",
-    genre: gameData?.genres?.[0]?.name || "Unknown"
+    image: gameData.background_image || "/images/default.jpg",
+    genre: gameData.genres?.[0]?.name || "Unknown"
   };
 
   try {
-    const response = await fetch("/api/achievements", {
+    const res = await fetch("/api/achievements", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(entry)
     });
 
-    if (!response.ok) throw new Error("Failed to save achievement");
+    if (!res.ok) throw new Error("Failed to save achievement");
 
-    document.getElementById("achievementForm").reset(); // ✅ Clear form after success
-    await fetchRecentAchievements(); // ✅ Refresh achievements
+    document.getElementById("achievementForm").reset();
+    await fetchRecentAchievements();
   } catch (error) {
     console.error("Error submitting achievement:", error);
   }
 });
 
-// Render Achievement with Visual Flair
+// Render Achievement Entry
 function renderAchievement(entry) {
   const li = document.createElement("li");
   li.className = "achievement-entry";
-
   li.innerHTML = `
     <div class="achievement-card">
       <img src="${entry.image}" alt="${entry.game} cover" class="game-cover" />
@@ -83,61 +81,46 @@ function renderAchievement(entry) {
       </div>
     </div>
   `;
-
   document.getElementById("achievementList").appendChild(li);
 }
 
-// Delete Achievement Entry
+// ❌ Delete Achievement
 async function deleteAchievement(id) {
   try {
-    const response = await fetch(`/api/achievements/${id}`, { method: "DELETE" });
-    if (!response.ok) throw new Error("Delete failed");
-
-    await fetchRecentAchievements(); // Refresh display
+    const res = await fetch(`/api/achievements/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Delete failed");
+    await fetchRecentAchievements();
   } catch (error) {
     console.error("Error deleting achievement:", error);
   }
 }
 
-// Fetch Recent Achievements
+// 🔄 Load Recent Achievements
 async function fetchRecentAchievements() {
   try {
-    const response = await fetch("/api/achievements");
-    if (!response.ok) throw new Error("Failed to fetch achievements");
+    const res = await fetch("/api/achievements");
+    if (!res.ok) throw new Error("Failed to fetch achievements");
 
-    const data = await response.json();
+    const data = await res.json();
     const list = document.getElementById("achievementList");
     list.innerHTML = "";
 
     data.forEach(renderAchievement);
   } catch (error) {
-    console.error("Error loading recent achievements:", error);
+    console.error("Error loading achievements:", error);
   }
 }
 
-// Fetch user name and greet
-async function displayWelcomeMessage() {
-  try {
-    const response = await fetch("/api/user");
-    const data = await response.json();
-
-    const banner = document.getElementById("welcomeBanner");
-
-    banner.innerHTML = data.name
-      ? `
-        <h2>Welcome back, ${data.name} 🎉</h2>
-        <p>Your achievement journey awaits—let’s level up!</p>
-      `
-      : `
-        <h2>Welcome, Guest 👋</h2>
-        <p>Feel free to explore or <a href="/login">log in</a> to start tracking your progress.</p>
-      `;
-  } catch (error) {
-    console.error("Error loading welcome message:", error);
-  }
+// 👋 Display Static Welcome Message (no Clerk)
+function displayWelcomeMessage() {
+  const banner = document.getElementById("welcomeBanner");
+  banner.innerHTML = `
+    <h2>Welcome, Guest 👋</h2>
+    <p>Your achievement journey awaits—let’s level up!</p>
+  `;
 }
 
-// Initialize on Page Load
+// 🚀 Initialize on Page Load
 window.addEventListener("DOMContentLoaded", () => {
   console.log("🎮 Achievement Tracker Loaded");
   displayWelcomeMessage();

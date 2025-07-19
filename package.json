@@ -10,17 +10,13 @@
   "author": "Amanda",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.6.0",
     "express": "^5.1.0",
-    "express-session": "^1.18.1",
     "mongoose": "^8.16.1",
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
-    "@types/node": "^24.0.4",
     "nodemon": "^3.1.10"
   }
 }
