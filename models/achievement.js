@@ -1,3 +1,5 @@
+// Gaming-Achievement-Tracker/models/achievement.js
+// This file defines the Mongoose schema for achievements
 const mongoose = require("mongoose");
 
 const achievementSchema = new mongoose.Schema(
@@ -5,10 +7,10 @@ const achievementSchema = new mongoose.Schema(
     game: { type: String, required: true },
     achievement: { type: String, required: true },
     progress: { type: Number, required: true },
-    image: { type: String, default: "" }, // RAWG image URL
+    image: { type: String, default: "" }, 
     genre: { type: String, default: "Unknown" }
   },
-  { timestamps: true } // includes createdAt & updatedAt
+  { timestamps: true } 
 );
 
 module.exports = mongoose.model("Achievement", achievementSchema);

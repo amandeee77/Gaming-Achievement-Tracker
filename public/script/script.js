@@ -1,4 +1,5 @@
 // Fetch game info from RAWG via backend proxy
+// This avoids CORS issues and keeps API key secure
 async function searchGame(title) {
   try {
     const response = await fetch(`/api/rawg-search?title=${encodeURIComponent(title)}`);
@@ -24,6 +25,8 @@ async function searchGame(title) {
 }
 
 // Handle Achievement Form Submission
+// This function collects form data, fetches game info, and submits the achievement
+// It also handles validation and error reporting
 document.getElementById("achievementForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -63,6 +66,8 @@ document.getElementById("achievementForm").addEventListener("submit", async (e) 
 });
 
 // Render Achievement Entry
+// This function creates a list item for each achievement entry
+// It includes the game cover, achievement details, progress bar, and delete button
 function renderAchievement(entry) {
   const li = document.createElement("li");
   li.className = "achievement-entry";
@@ -84,7 +89,8 @@ function renderAchievement(entry) {
   document.getElementById("achievementList").appendChild(li);
 }
 
-// ❌ Delete Achievement
+// Delete Achievement
+// This function sends a DELETE request to remove an achievement by ID
 async function deleteAchievement(id) {
   try {
     const res = await fetch(`/api/achievements/${id}`, { method: "DELETE" });
@@ -95,7 +101,8 @@ async function deleteAchievement(id) {
   }
 }
 
-// 🔄 Load Recent Achievements
+// Load Recent Achievements
+// This function fetches the latest achievements from the server
 async function fetchRecentAchievements() {
   try {
     const res = await fetch("/api/achievements");
@@ -111,7 +118,7 @@ async function fetchRecentAchievements() {
   }
 }
 
-// 👋 Display Static Welcome Message (no Clerk)
+// Display Static Welcome Message
 function displayWelcomeMessage() {
   const banner = document.getElementById("welcomeBanner");
   banner.innerHTML = `
@@ -120,7 +127,7 @@ function displayWelcomeMessage() {
   `;
 }
 
-// 🚀 Initialize on Page Load
+// Initialize on Page Load
 window.addEventListener("DOMContentLoaded", () => {
   console.log("🎮 Achievement Tracker Loaded");
   displayWelcomeMessage();

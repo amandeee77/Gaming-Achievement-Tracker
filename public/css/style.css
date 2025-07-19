@@ -1,4 +1,4 @@
-/* 🌌 Base Styles */
+/* Base Styles */
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
@@ -18,7 +18,7 @@ body {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-/* 🏷️ Header */
+/* Header */
 header {
   text-align: center;
   margin-bottom: 1rem;
@@ -35,7 +35,7 @@ header p {
   color: #ccc;
 }
 
-/* 👋 Welcome Banner */
+/* Welcome Banner */
 .welcome-banner {
   text-align: center;
   margin: 1.5rem auto 2rem;
@@ -57,7 +57,7 @@ header p {
   font-size: 1rem;
 }
 
-/* 📝 Form Styling */
+/* Form Styling */
 form {
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ button[type="submit"]:hover {
   background-color: #ffd633;
 }
 
-/* 🏆 Achievement Cards */
+/* Achievement Cards */
 #achievementList {
   list-style: none;
   padding: 0;
@@ -140,7 +140,7 @@ button[type="submit"]:hover {
   margin: 0 0 0.5rem;
 }
 
-/* 📊 Progress Bar */
+/* Progress Bar */
 .progress-container {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 6px;
@@ -159,7 +159,7 @@ button[type="submit"]:hover {
   transition: width 0.4s ease-in-out;
 }
 
-/* 🧭 Footer */
+/* Footer */
 footer {
   text-align: center;
   margin-top: 2rem;
@@ -167,7 +167,7 @@ footer {
   color: #bbb;
 }
 
-/* 📱 Responsive Styling */
+/* Responsive Styling */
 @media (max-width: 768px) {
   .container {
     width: 95%;
