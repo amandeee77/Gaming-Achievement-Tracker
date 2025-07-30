@@ -4,13 +4,13 @@ The Gaming Achievement Tracker is a responsive full-stack web application that a
 Built with Node.js, Express.js, and integrated with MongoDB and the RAWG API, this app showcases full-stack functionality, session-based personalization, and dynamic DOM rendering.
 
  Features
-- 📘 Submit gaming achievements with custom titles and progress values
-- 🎨 Visualize achievement progress with dynamic UI cards and gold progress bars
-- 🧠 Fetch game cover images and genres using RAWG.io game database
-- 👤 User login/signup with session-based welcome banner
-- 🔁 Achievements persist across refreshes using MongoDB
-- 📱 Responsive design optimized for mobile and desktop
-- 🔑 Guest access with optional registration flow
+-  Submit gaming achievements with custom titles and progress values
+-  Visualize achievement progress with dynamic UI cards and gold progress bars
+-  Fetch game cover images and genres using RAWG.io game database
+-  User login/signup with session-based welcome banner
+-  Achievements persist across refreshes using MongoDB
+-  Responsive design optimized for mobile and desktop
+-  Guest access with optional registration flow
 
  Technologies Used
 | Layer | Stack | 
@@ -64,13 +64,13 @@ http://localhost:3000
 
 
  Future Improvements
-- 📊 Integrate charts (Chart.js or D3.js) for progress visualization
-- 🥇 Implement leaderboard or multiplayer comparison
-- 🧑‍🎨 Allow profile customization with avatars and bios
-- 🎯 Build achievement filters and genre sorting
+-  Integrate charts (Chart.js or D3.js) for progress visualization
+-  Implement leaderboard or multiplayer comparison
+-  Allow profile customization with avatars and bios
+-  Build achievement filters and genre sorting
 
  Credits
-Special thanks to RAWG.io for their open game database API.
+Special thanks to RAWG.io for their open game database API!
 
 
 

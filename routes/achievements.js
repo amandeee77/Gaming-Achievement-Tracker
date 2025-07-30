@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Achievement = require("../models/achievement");
 
-// 🟢 GET: Fetch all achievements (public access)
+//  GET: Fetch all achievements (public access)
 router.get("/", async (req, res) => {
   console.log("📡 GET /api/achievements hit");
 
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 🟡 POST: Save a new achievement (guest mode)
+//  POST: Save a new achievement (guest mode)
 router.post("/", async (req, res) => {
   console.log("📨 POST /api/achievements hit");
   console.log("📦 Body:", req.body);
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// 🔴 DELETE: Remove achievement by ID
+//  DELETE: Remove achievement by ID
 router.delete("/:id", async (req, res) => {
   console.log("🗑️ DELETE /api/achievements/", req.params.id);
 
