@@ -19,8 +19,8 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then(() => console.log("✅ Connected to MongoDB Atlas"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("Connected to MongoDB Atlas"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 // Middleware
 app.use(cors());
@@ -46,14 +46,14 @@ app.get("/api/rawg-search", async (req, res) => {
     const data = await response.json();
     res.json(data.results[0] || {});
   } catch (err) {
-    console.error("❌ RAWG API fetch error:", err);
+    console.error("RAWG API fetch error:", err);
     res.status(500).json({ error: "Failed to fetch game data from RAWG." });
   }
 });
 
 // Fallback for unknown routes
 app.use((req, res) => {
-  res.status(404).send("🚫 Route not found");
+  res.status(404).send("Route not found");
 });
 
 app.use((err, req, res, next) => {
@@ -63,5 +63,5 @@ app.use((err, req, res, next) => {
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`🌐 Server running at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });

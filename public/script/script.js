@@ -82,7 +82,7 @@ function renderAchievement(entry) {
             ${entry.progress}%
           </div>
         </div>
-        <button class="delete-btn" onclick="deleteAchievement('${entry._id}')">❌ Remove</button>
+        <button class="delete-btn" onclick="deleteAchievement('${entry._id}')">Remove</button>
       </div>
     </div>
   `;
@@ -129,7 +129,7 @@ function displayWelcomeMessage() {
 
 // Initialize on Page Load
 window.addEventListener("DOMContentLoaded", () => {
-  console.log("🎮 Achievement Tracker Loaded");
+  console.log(" Achievement Tracker Loaded");
   displayWelcomeMessage();
   fetchRecentAchievements();
 });
